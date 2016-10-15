@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.opennms.newts.api.Duration;
+import org.opennms.newts.api.LastUpdate;
 import org.opennms.newts.api.Measurement;
 import org.opennms.newts.api.Resource;
 import org.opennms.newts.api.Results;
@@ -44,6 +45,7 @@ class Transform {
     private Transform() {}
 
     private static final Function<SampleDTO, Sample> DTO_TO_SAMPLE;
+    private static final Function<LastUpdateDTO, LastUpdate> DTO_TO_LAST_UPDATE;
 
     static {
         DTO_TO_SAMPLE = new Function<SampleDTO, Sample>() {
@@ -60,6 +62,14 @@ class Transform {
                         input.getAttributes());
             }
         };
+        
+        DTO_TO_LAST_UPDATE = new Function<LastUpdateDTO, LastUpdate>() {
+        	
+			@Override
+			public LastUpdate apply(LastUpdateDTO input) {
+				return new LastUpdate(Timestamp.fromEpochMillis(input.getTimestamp()), new Resource(input.getResource()));
+			}
+		};
     }
 
     private static Optional<Map<String, String>> wrapMap(Map<String, String> map) {
@@ -105,6 +115,10 @@ class Transform {
      */
     static Collection<Sample> samples(Collection<SampleDTO> samples) {
         return Collections2.transform(samples, DTO_TO_SAMPLE);
+    }
+    
+    static Collection<LastUpdate> lastUpdates(Collection<LastUpdateDTO> lastUpdates) {
+    	return Collections2.transform(lastUpdates, DTO_TO_LAST_UPDATE);
     }
 
     /**

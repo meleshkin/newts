@@ -19,6 +19,7 @@ package org.opennms.newts.rest;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.inject.name.Names.named;
 
+import org.opennms.newts.api.LastUpdateRepository;
 import org.opennms.newts.api.SampleProcessor;
 import org.opennms.newts.api.SampleRepository;
 import org.opennms.newts.api.search.Indexer;
@@ -34,6 +35,7 @@ import org.opennms.newts.cassandra.search.GuavaResourceMetadataCache;
 import org.opennms.newts.cassandra.search.ResourceIdSplitter;
 import org.opennms.newts.cassandra.search.ResourceMetadataCache;
 import org.opennms.newts.cassandra.search.SimpleResourceIdSplitter;
+import org.opennms.newts.persistence.cassandra.CassandraLastUpdateRepository;
 import org.opennms.newts.persistence.cassandra.CassandraSampleRepository;
 
 import com.google.inject.AbstractModule;
@@ -76,6 +78,7 @@ public class CassandraGuiceModule extends AbstractModule {
         bind(Searcher.class).to(CassandraSearcher.class);
         bind(SampleRepository.class).to(CassandraSampleRepository.class);
         bind(Indexer.class).to(CassandraIndexer.class);
+        bind(LastUpdateRepository.class).to(CassandraLastUpdateRepository.class);
 
         Multibinder<SampleProcessor> processors = Multibinder.newSetBinder(binder(), SampleProcessor.class);
 

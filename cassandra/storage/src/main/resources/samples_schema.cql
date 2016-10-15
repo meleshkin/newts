@@ -12,3 +12,9 @@ CREATE TABLE $KEYSPACE$.samples (
     attributes map<text, text>,
     PRIMARY KEY((context, partition, resource), collected_at, metric_name)
 );
+
+CREATE TABLE $KEYSPACE$.last_update (
+	resource text,
+	last_update timestamp,
+	PRIMARY KEY (resource)
+);
